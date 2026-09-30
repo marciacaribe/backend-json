@@ -54,7 +54,7 @@ app.post("/users", async (req, res) => {
     const { nome, email } = req.body;
 
     if (!nome || !email) {
-      return res.status(400).json({ error: "Nome e email são obrigatórios" });
+      return res.status(400).json({ error: "Nome e e-mail são obrigatórios" });
     }
 
     const users = await readUsers();
@@ -69,8 +69,8 @@ app.post("/users", async (req, res) => {
     await writeUsers(users);
 
     res.status(201).json(novoUsuario);
-  } catch (error) {
-    res.status(500).json({ error: "Erro ao salvar dados" });
+  } catch (err) {
+    res.status(500).json({ error: "Erro ao salvar usuario" });
   }
 });
 app.listen(PORT, () => {
