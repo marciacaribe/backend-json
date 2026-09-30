@@ -73,6 +73,31 @@ app.post("/users", async (req, res) => {
     res.status(500).json({ error: "Erro ao salvar usuario" });
   }
 });
+
+app.put("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nome, email } = req.body;
+    const users = await readUsers();
+
+    const Index = users.findIndex((u) => u.id === id);
+    if (Index === -1) {
+      return res.status(404).json({ error: "Usuário não encontrado" });
+    }
+
+    users[Index] = {
+      ...users[Index],
+      nome: nome ?? users[Index].nome,
+      email: email ?? users[Index].email,
+    };
+
+    await writeUsers(users);
+    res.json(users[Index]);
+  } catch (err) {
+    res.status(500).json({ error: "Erro ao atualizar usuário" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
