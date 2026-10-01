@@ -97,6 +97,23 @@ app.put("/users/:id", async (req, res) => {
     res.status(500).json({ error: "Erro ao atualizar usuário" });
   }
 });
+app.delete("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const users = await readUsers();
+
+    const Index = users.findIndex((u) => u.id === id);
+    if (Index === -1) {
+      return res.status(404).json({ error: "Usuário não encontrado" });
+    }
+
+    users.splice(Index, 1);
+    await writeUsers(users);
+    res.status(200).json({ message: "Usuário deletado com sucesso" });
+  } catch (err) {
+    res.status(500).json({ error: "Erro ao deletar usuário" });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
