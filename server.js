@@ -109,6 +109,7 @@ app.delete("/users/:id", async (req, res) => {
 
     users.splice(Index, 1);
     await writeUsers(users);
+
     res.status(200).json({ message: "Usuário deletado com sucesso" });
   } catch (err) {
     res.status(500).json({ error: "Erro ao deletar usuário" });
